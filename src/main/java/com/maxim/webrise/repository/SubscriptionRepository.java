@@ -1,9 +1,15 @@
 package com.maxim.webrise.repository;
 
 import com.maxim.webrise.repository.entity.Subscription;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
+    @Query("SELECT s FROM Subscription s JOIN s.users us GROUP BY s.id ORDER BY COUNT(us.id) DESC")
+    List<Subscription> findTopSubscriptions(Pageable pageable);
 }

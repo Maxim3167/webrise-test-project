@@ -9,6 +9,8 @@ import com.maxim.webrise.repository.entity.User;
 import com.maxim.webrise.repository.entity.UserSubscription;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,6 +56,11 @@ public class SubscriptionService {
 
         log.info("Found {} subscriptions for user {}", subscriptions.size(), userId);
         return subscriptions;
+    }
+
+    public List<Subscription> getTopSubscriptions(int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
+        return subscriptionRepository.findTopSubscriptions(pageable);
     }
 
     public void deleteSubscription(Long userId, Long subscriptionId) {
